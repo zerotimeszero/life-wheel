@@ -1,1 +1,43 @@
-<app-life-wheel [config]="testConfig"></app-life-wheel>
+<div class="container">
+    <label>
+        <div>Выберите отдел</div>
+        <tui-combo-box [formControl]="deparmentControl"
+                       [stringify]="departmentStringify">
+            Отдел
+
+            <tui-data-list-wrapper *tuiDataList
+                                   [itemContent]="departmentStringify | tuiStringifyContent"
+                                   [items]="departments | tuiFilterByInput" />
+        </tui-combo-box>
+    </label>
+
+    @if (deparmentControl.value) {
+        @let employees = deparmentControl.value.employees;
+        <div class="spacer"></div>
+        @for (employee of employees; track employee.fullname) {
+            <div class="employee-form">
+                <div><b>{{employee.fullname}}</b></div>
+                @for (lifeArea of lifeAreas; track lifeArea.name){
+                    <div class="flex">
+                        <div>{{lifeArea.name}}</div>
+                        <tui-icon
+                            appearance=""
+                            tuiHintDirection="right"
+                            [tuiTooltip]="lifeArea.description"
+                            class="primary"
+                        />
+                    </div>
+                    <tui-input-number
+                        [max]="10"
+                        [min]="1"
+                    >
+                    
+                        <input tuiTextfieldLegacy />
+                    </tui-input-number>
+                }
+            </div>
+            
+        }
+
+    }
+</div>
